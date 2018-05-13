@@ -1,35 +1,120 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-    <a class="navbar-brand" href="/">Names.Web</a>
-    <button class="navbar-toggler" onclick=@ToggleNavMenu>
-        <span class="navbar-toggler-icon"></span>
-    </button>
-</div>
+﻿@inject HttpClient Http
+@using Microsoft.AspNetCore.Blazor.Browser.Interop
+@using Names.Domain.Entities
+@using Names.Web
 
-<div class=@(collapseNavMenu ? "collapse" : null) onclick=@ToggleNavMenu>
-    <ul class="nav flex-column">
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/" Match=NavLinkMatch.All>
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </li>
-        <li class="nav-item px-3">
-            <NavLink class="nav-link" href="/fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </li>
-    </ul>
-</div>
+<h1>Casi cien años de nombres</h1>
+
+<p>Pincha en un nombre para ver su evolución</p>
+
+@if (names == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="tagcloud">
+        <div>
+            @foreach (var name in names)
+            {
+                <a href="#" onclick="@(() => ToggleName(name))" style="@name.Style" class="@name.Class">@name.Value</a>
+            }
+        </div>
+    </div>
+}
 
 @functions {
-    bool collapseNavMenu = true;
+    public TagName[] names;
 
-    void ToggleNavMenu()
+    protected override async Task OnInitAsync()
     {
-        collapseNavMenu = !collapseNavMenu;
+        names = await Http.GetJsonAsync<TagName[]>(Config.BaseUrl + "/api/names");
+    }
+
+    public void ToggleName(TagName name)
+    {
+        if (name.IsClicked)
+        {
+            name.IsClicked = false;
+            RemoveName(name);
+        }
+        else
+        {
+            name.IsClicked = true;
+            AddName(name);
+        }
+    }
+
+    protected async void AddName(TagName name)
+    {
+        var quantities = await Http.GetJsonAsync<Quantity[]>(Config.BaseUrl + "/api/quantities/" + name.Id);
+
+        int[] data = new int[10];
+
+        for (var i = 0; i < 10; i++)
+        {
+            var quantity = Array.Find(quantities, q => q.Year == i + 1);
+            data[i] = quantity != null ? quantity.Total : 0;
+        }
+
+        AddDataset(name.Id, name.Value, data);
+    }
+
+    protected void RemoveName(TagName name)
+    {
+        RemoveDataset(name.Id);
+    }
+
+    protected void AddDataset(int id, string name, int[] data)
+    {
+        RegisteredFunction.Invoke<bool>("addDataset", id, name, data);
+    }
+
+    protected void RemoveDataset(int id)
+    {
+        RegisteredFunction.Invoke<bool>("removeDataset", id);
+    }
+
+    public class TagName : Name
+    {
+        public bool IsClicked { get; set; }
+        public string Class
+        {
+            get
+            {
+                return Gender ? "tag female" : "tag male";
+            }
+        }
+
+        public string Style
+        {
+            get
+            {
+                return $"font-size:{Size}px";
+            }
+        }
+
+        public double Size
+        {
+            get
+            {
+                const int fontMin = 10;
+                const int fontMax = 42;
+                const int max = 500000;
+                const int min = 5000;
+
+                if (Total <= min)
+                {
+                    return fontMin;
+                }
+
+                if (Total >= max)
+                {
+                    return fontMax;
+                }
+
+                return ((double)Total / (double)max) * (fontMax - fontMin) + fontMin;
+            }
+        }
     }
 }

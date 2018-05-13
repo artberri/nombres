@@ -10,7 +10,7 @@ namespace Names.Domain.Entities
 
         public bool Compound { get; set; }
 
-        public int? Total { get; set; }
+        public int Total { get; set; }
 
     }
 }

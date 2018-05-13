@@ -1,7 +1,30 @@
 ﻿@page "/"
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Blazor.Browser.Interop
+@using Names.Domain.Entities
 
-<h1>Hello, world!</h1>
+<canvas class="chart" id="canvas"></canvas>
 
-Welcome to your new app.
+<div>
+    <p><a href="http://www.ine.es/tnombres/formGeneral.do?vista=1">Fuente de datos: Sitio web del INE (www.ine.es)</a></p>
+    <p><a href="https://dataaddict.fr/prenoms/">Basado en un proyecto de Data Addict</a></p>
+    <p>Sólo se muestran los nombres cuya frecuencia es mayor o igual a 20 para el total nacional. Para las provincias seleccionadas se exige además una frecuencia de al menos 5. Por esta razón, la frecuencia total nacional para algunos nombres puede no ser igual a la suma de las provincias que se muestran.</p>
+    <p>Datos procedentes de la Estadística del Padrón Continuo a fecha 01/01/2016</p>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+</div>
+
+@functions {
+    public int[] decades;
+
+    protected override async Task OnInitAsync()
+    {
+        var years = await Http.GetJsonAsync<Year[]>(Config.BaseUrl + "/api/years");
+        decades = years.Select(year => year.Value).ToArray();
+        RenderChart();
+    }
+
+    protected void RenderChart()
+    {
+        RegisteredFunction.Invoke<bool>("renderChart", decades);
+    }
+}
