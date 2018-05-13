@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
-using Names.Infrastructure.Context;
 
 namespace Names.API
 {
@@ -27,9 +29,16 @@ namespace Names.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NamesContext>();
-
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddCors();
+            services.AddMvc().AddJsonOptions(opt =>
+            {
+                var resolver  = opt.SerializerSettings.ContractResolver;
+                if (resolver != null)
+                {
+                    var res = resolver as DefaultContractResolver;
+                    res.NamingStrategy = null;  // <<!-- this removes the camelcasing
+                }
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             // Register the Swagger generator, defining one or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -49,6 +58,19 @@ namespace Names.API
             {
                 app.UseHsts();
             }
+
+            app.UseCors(builder =>
+                builder.WithOrigins("http://localhost:32077"));
+
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".wasm"] = "application/wasm";
+            provider.Mappings[".dll"] = "application/octet-stream";
+
+            app.UseDefaultFiles();
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                ContentTypeProvider = provider
+            });
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();

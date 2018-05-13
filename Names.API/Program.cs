@@ -14,7 +14,16 @@ namespace Names.API
     {
         public static void Main(string[] args)
         {
-            CreateWebHostBuilder(args).Build().Run();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("hosting.json", true)
+                .Build();
+
+            CreateWebHostBuilder(args)
+                .UseKestrel(options => options.AddServerHeader = false)
+                .UseConfiguration(config)
+                .Build()
+                .Run();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
