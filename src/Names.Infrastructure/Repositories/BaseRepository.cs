@@ -8,7 +8,7 @@ namespace Names.Infrastructure.Repositories
     {
         protected static SqliteConnection GetDbConnection()
         {
-            return new SqliteConnection("Data Source=../nombres.db");
+            return new SqliteConnection("Data Source=../../db/nombres.db");
         }
 
         protected static void Execute(Action<IDbConnection> query)

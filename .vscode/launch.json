@@ -7,9 +7,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Names.API/bin/Debug/netcoreapp2.1/Names.API.dll",
+            "program": "${workspaceFolder}/src/Names.API/bin/Debug/netcoreapp2.1/Names.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Names.API",
+            "cwd": "${workspaceFolder}/src/Names.API",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {

@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![Build Status](https://berriart.visualstudio.com/_apis/public/build/definitions/436fee41-609f-4897-b276-9c77adfba929/9/badge)
-[![](https://images.microbadger.com/badges/version/artberri/nombres.svg)](https://hub.docker.com/r/artberri/nombres/)
+[![Docker Image](https://images.microbadger.com/badges/version/artberri/nombres.svg)](https://hub.docker.com/r/artberri/nombres/)
 
 **Data Visualization WebApp of 100 years of Spanish first names.**
 
@@ -16,13 +16,13 @@ A simple example of how [Blazor](https://github.com/aspnet/Blazor), an experimen
 
 "Nombres" has not been deployed to any server yet. For now, the only way to demo it is using the image available on docker hub at [artberri/nombres](https://hub.docker.com/r/artberri/nombres/). To pull the latest version of the image, run the following command:
 
-```
+```bash
 docker pull artberri/nombres
 ```
 
 To run the image, exec the following command:
 
-```
+```bash
 docker run -it --rm -p 8080:5000 artberri/nombres
 ```
 
@@ -46,7 +46,7 @@ Open the project in Visual Studio Code and hit Ctrl+F5 (or just F5) to start the
 If running from the command line:
 
 ```bash
-dotnet run --project Names.API/Names.API.csproj
+dotnet run --project src/Names.API/Names.API.csproj
 ```
 
 ### Running the Web App
@@ -54,7 +54,7 @@ dotnet run --project Names.API/Names.API.csproj
 Run in the command line:
 
 ```bash
-dotnet run --project Names.Web/Names.Web.csproj
+dotnet run --project src/Names.Web/Names.Web.csproj
 ```
 
 ### Running all with Docker Compose
