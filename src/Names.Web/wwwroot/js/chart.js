@@ -22,7 +22,7 @@
             responsive: true,
             title: {
                 display: true,
-                text: 'Chart.js Line Chart'
+                text: 'Frecuencia de nombres por década'
             },
             tooltips: {
                 mode: 'index',

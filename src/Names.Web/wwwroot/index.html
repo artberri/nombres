@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width">
-    <title>Names.Web</title>
+    <title>Cien años de nombres</title>
     <base href="/" />
-    <link href="//cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Anton" rel="stylesheet">
     <link href="css/site.css" rel="stylesheet" />
     <script type="text/javascript">
         var appInsights=window.appInsights||function(a){
@@ -18,7 +19,14 @@
     </script>
 </head>
 <body>
-    <app>Cargando...</app>
+    <app>
+        <div class="preloader">
+            <div class="preloader__container">
+                <i class="preloader__element"></i>
+                <i class="preloader__element"></i>
+            </div>
+        </div>
+    </app>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
     <script type="blazor-boot"></script>
