@@ -22,6 +22,7 @@ namespace Names.API
             CreateWebHostBuilder(args)
                 .UseKestrel(options => options.AddServerHeader = false)
                 .UseConfiguration(config)
+                .UseApplicationInsights()
                 .Build()
                 .Run();
         }
