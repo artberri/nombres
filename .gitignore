@@ -305,8 +305,18 @@ __pycache__/
 # By default, sensitive information, such as encrypted password
 # should be stored in the .pubxml.user file.
 
+### Terraform ###
+# Compiled files
+*.tfstate
+*.tfstate.*
 
-# End of https://www.gitignore.io/api/visualstudio,visualstudiocode
+# Module directory
+.terraform/
+
+# .tfvars files
+*.tfvars
+
+# End of https://www.gitignore.io/api/visualstudio,visualstudiocode,terraform
 
 ## Names
 src/*/out
