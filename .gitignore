@@ -320,3 +320,4 @@ __pycache__/
 
 ## Names
 src/*/out
+!/terraform.tfvars
