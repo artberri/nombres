@@ -12,12 +12,19 @@ namespace Names.API.Controllers
     [ApiController]
     public class NamesController : ControllerBase
     {
+        private readonly NameRepository _nameRepository;
+
+        public NamesController(NameRepository nameRepository)
+        {
+            _nameRepository = nameRepository;
+        }
+
         [HttpGet]
         public ActionResult<List<Name>> Get()
         {
-            var names = NameRepository.Get();
+            var names = _nameRepository.Get();
 
-            return names;
+            return names.ToList();
         }
     }
 }

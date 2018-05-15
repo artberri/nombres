@@ -12,12 +12,19 @@ namespace Names.API.Controllers
     [ApiController]
     public class QuantityController : ControllerBase
     {
+        private readonly QuantityRepository _quantityRepository;
+
+        public QuantityController(QuantityRepository quantityRepository)
+        {
+            _quantityRepository = quantityRepository;
+        }
+
         [HttpGet("{nameId}")]
         public ActionResult<List<Quantity>> GetByName(int nameId)
         {
-            var names = QuantityRepository.GetByName(nameId);
+            var quantities = _quantityRepository.GetByName(nameId);
 
-            return names;
+            return quantities.ToList();
         }
     }
 }

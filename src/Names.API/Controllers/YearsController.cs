@@ -12,12 +12,19 @@ namespace Names.API.Controllers
     [ApiController]
     public class YearsController : ControllerBase
     {
+        private readonly YearRepository _yearRepository;
+
+        public YearsController(YearRepository yearRepository)
+        {
+            _yearRepository = yearRepository;
+        }
+
         [HttpGet]
         public ActionResult<List<Year>> Get()
         {
-            var years = YearRepository.Get();
+            var years = _yearRepository.Get();
 
-            return years;
+            return years.ToList();
         }
     }
 }
