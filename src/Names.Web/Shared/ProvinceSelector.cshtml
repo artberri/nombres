@@ -1,0 +1,35 @@
+﻿@inject HttpClient Http
+@inject Names.Web.EventHandlers.ProvinceChangeHandler ProvinceChangeHandler
+@using Names.Domain.Entities
+
+@if (provinces == null)
+{
+    <p><em>Cargando provincias...</em></p>
+}
+else
+{
+    <label for="provinceselector">Provincia: </label>
+    <select onchange="@ChangeProvince" id="provinceselector" name="provinceselector" class="provinces">
+        <option value="0">Todas</option>
+        @foreach (var province in provinces)
+        {
+            <option value="@province.Id">@province.Name</option>
+        }
+    </select>
+}
+
+@functions {
+    public int selected;
+    public Province[] provinces;
+
+    protected override async Task OnInitAsync()
+    {
+        provinces = await Http.GetJsonAsync<Province[]>(Config.BaseUrl + "/api/provinces");
+    }
+
+    public void ChangeProvince(UIChangeEventArgs e)
+    {
+        var provinceId = Convert.ToInt32(e.Value);
+        ProvinceChangeHandler.ChangeTo(provinceId);
+    }
+}

@@ -1,7 +1,8 @@
-﻿@inject HttpClient Http
-@using Microsoft.AspNetCore.Blazor.Browser.Interop
+﻿@using Microsoft.AspNetCore.Blazor.Browser.Interop
 @using Names.Domain.Entities
 @using Names.Web
+@inject HttpClient Http
+@inject Names.Web.EventHandlers.ProvinceChangeHandler ProvinceChangeHandler
 
 <h1>Cien años de nombres</h1>
 
@@ -9,7 +10,12 @@
 
 @if (names == null)
 {
-    <p><em>Loading...</em></p>
+    <div class="preloader">
+        <div class="preloader__container">
+            <i class="preloader__element"></i>
+            <i class="preloader__element"></i>
+        </div>
+    </div>
 }
 else
 {
@@ -28,7 +34,8 @@ else
 
     protected override async Task OnInitAsync()
     {
-        names = await Http.GetJsonAsync<TagName[]>(Config.BaseUrl + "/api/names");
+        await GetAll();
+        ProvinceChangeHandler.ProvinceChanged += new EventHandler<int>(this.OnProvinceChanged);
     }
 
     public void ToggleName(TagName name)
@@ -45,7 +52,33 @@ else
         }
     }
 
-    protected async void AddName(TagName name)
+    private async void OnProvinceChanged(object sender, int provinceId)
+    {
+        names = null;
+        this.StateHasChanged();
+
+        if (provinceId > 0)
+        {
+            await GetByProvince(provinceId);
+        }
+        else
+        {
+            await GetAll();
+        }
+        this.StateHasChanged();
+    }
+
+    private async Task GetAll()
+    {
+        names = await Http.GetJsonAsync<TagName[]>(Config.BaseUrl + "/api/names");
+    }
+
+    private async Task GetByProvince(int provinceId)
+    {
+        names = await Http.GetJsonAsync<TagName[]>(Config.BaseUrl + "/api/names/" + provinceId.ToString());
+    }
+
+    private async void AddName(TagName name)
     {
         var quantities = await Http.GetJsonAsync<Quantity[]>(Config.BaseUrl + "/api/quantities/" + name.Id);
 
@@ -60,17 +93,17 @@ else
         AddDataset(name.Id, name.Value, data);
     }
 
-    protected void RemoveName(TagName name)
+    private void RemoveName(TagName name)
     {
         RemoveDataset(name.Id);
     }
 
-    protected void AddDataset(int id, string name, int[] data)
+    private void AddDataset(int id, string name, int[] data)
     {
         RegisteredFunction.Invoke<bool>("addDataset", id, name, data);
     }
 
-    protected void RemoveDataset(int id)
+    private void RemoveDataset(int id)
     {
         RegisteredFunction.Invoke<bool>("removeDataset", id);
     }
@@ -82,7 +115,13 @@ else
         {
             get
             {
-                return Gender ? "tag female" : "tag male";
+                var classes = Gender ? "tag female" : "tag male";
+                if (IsClicked)
+                {
+                    classes = classes + " active";
+                }
+
+                return classes;
             }
         }
 

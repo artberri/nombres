@@ -3,7 +3,12 @@
 @using Microsoft.AspNetCore.Blazor.Browser.Interop
 @using Names.Domain.Entities
 
+<div class="header">
+    <ProvinceSelector />
+</div>
+
 <canvas class="chart" id="canvas"></canvas>
+
 <div>
     <div class="footer">
         <p><a href="http://www.ine.es/tnombres/formGeneral.do?vista=1">Fuente de datos: Sitio web del INE (www.ine.es)</a></p>

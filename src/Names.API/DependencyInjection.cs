@@ -14,6 +14,7 @@ namespace Names.API
             services.AddScoped<NameRepository>();
             services.AddScoped<YearRepository>();
             services.AddScoped<QuantityRepository>();
+            services.AddScoped<ProvinceRepository>();
         }
     }
 }

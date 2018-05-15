@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Blazor.Browser.Rendering;
 using Microsoft.AspNetCore.Blazor.Browser.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Names.Web.EventHandlers;
 using System;
 
 namespace Names.Web
@@ -11,7 +12,7 @@ namespace Names.Web
         {
             var serviceProvider = new BrowserServiceProvider(services =>
             {
-                // Add any custom services here
+                services.AddSingleton<ProvinceChangeHandler>();
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

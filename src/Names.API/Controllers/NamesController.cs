@@ -26,5 +26,13 @@ namespace Names.API.Controllers
 
             return names.ToList();
         }
+
+        [HttpGet("{provinceId}")]
+        public ActionResult<List<Name>> GetByProvince(int provinceId)
+        {
+            var names = _nameRepository.GetByProvince(provinceId);
+
+            return names.ToList();
+        }
     }
 }

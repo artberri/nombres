@@ -14,8 +14,14 @@ namespace Names.Infrastructure.Repositories
         }
         public IEnumerable<Name> Get()
         {
-            var query = "SELECT names.*, SUM(quantity.value) AS total FROM names INNER JOIN quantity ON names.id = quantity.name GROUP BY names.id HAVING total > 1000 ORDER BY value ASC";
+            var query = "SELECT n.*, SUM(q.value) AS total FROM names n INNER JOIN quantity q ON n.id = q.name GROUP BY n.id HAVING total > 1000 ORDER BY n.value ASC";
             return _db.Query<Name>(query);
+        }
+
+        public IEnumerable<Name> GetByProvince(int provinceId)
+        {
+            var query = "SELECT n.*, SUM(q.value) AS total FROM names n INNER JOIN quantity q ON n.id = q.name WHERE q.province = @ProvinceId GROUP BY n.id HAVING total > 100 ORDER BY n.value ASC";
+            return _db.Query<Name>(query, new {ProvinceId = provinceId});
         }
     }
 }
