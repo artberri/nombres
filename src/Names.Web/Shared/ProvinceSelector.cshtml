@@ -1,5 +1,5 @@
-﻿@inject HttpClient Http
-@inject Names.Web.EventHandlers.ProvinceChangeHandler ProvinceChangeHandler
+﻿@inject Names.Web.EventHandlers.ProvinceChangeHandler ProvinceChangeHandler
+@inject Names.Web.ApiClients.ProvinceApiClient ProvinceApiClient
 @using Names.Domain.Entities
 
 @if (provinces == null)
@@ -19,12 +19,11 @@ else
 }
 
 @functions {
-    public int selected;
     public Province[] provinces;
 
     protected override async Task OnInitAsync()
     {
-        provinces = await Http.GetJsonAsync<Province[]>(Config.BaseUrl + "/api/provinces");
+        provinces = await ProvinceApiClient.GetAll();
     }
 
     public void ChangeProvince(UIChangeEventArgs e)

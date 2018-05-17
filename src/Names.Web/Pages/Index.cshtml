@@ -1,5 +1,6 @@
 ﻿@page "/"
 @inject HttpClient Http
+@inject Names.Web.ApiClients.YearApiClient YearApiClient
 @using Microsoft.AspNetCore.Blazor.Browser.Interop
 @using Names.Domain.Entities
 
@@ -20,17 +21,13 @@
 </div>
 
 @functions {
-    public int[] decades;
-
-    protected override async Task OnInitAsync()
+    protected override void OnAfterRender()
     {
-        var years = await Http.GetJsonAsync<Year[]>(Config.BaseUrl + "/api/years");
-        decades = years.Select(year => year.Value).ToArray();
         RenderChart();
     }
 
     protected void RenderChart()
     {
-        RegisteredFunction.Invoke<bool>("renderChart", decades);
+        RegisteredFunction.Invoke<bool>("renderChart");
     }
 }

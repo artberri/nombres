@@ -51,6 +51,21 @@ app {
     flex-direction: column;
 }
 
+.yearselector {
+    margin: 3vh 0;
+}
+
+    .yearselector label {
+        color: #292F36;
+        border: 0;
+        padding-left: 0;
+    }
+
+    .yearselector select {
+        background: #ffffff;
+        border: 1px solid #d5d5d5;
+    }
+
 .main {
     flex: 1;
 }

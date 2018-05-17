@@ -1,0 +1,36 @@
+﻿@inject Names.Web.EventHandlers.YearChangeHandler YearChangeHandler
+@inject Names.Web.ApiClients.YearApiClient YearApiClient
+@using Names.Domain.Entities
+
+@if (years == null)
+{
+    <p><em>Cargando años...</em></p>
+}
+else
+{
+    <div class="yearselector">
+        <label for="yearselector">Ver los 1000 nombres más frecuentes de:</label>
+        <select onchange="@ChangeYear" id="yearselector" name="yearselector" class="years">
+            <option value="0">Todas las décadas</option>
+            @foreach (var year in years)
+            {
+                <option value="@year.Id">@year.Value</option>
+            }
+        </select>
+    </div>
+}
+
+@functions {
+    public Year[] years;
+
+    protected override async Task OnInitAsync()
+    {
+        years = await YearApiClient.GetAll();
+    }
+
+    public void ChangeYear(UIChangeEventArgs e)
+    {
+        var yearId = Convert.ToInt32(e.Value);
+        YearChangeHandler.ChangeTo(yearId);
+    }
+}

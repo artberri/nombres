@@ -16,7 +16,8 @@
     var config = {
         type: 'line',
         data: {
-            datasets: []
+            datasets: [],
+            labels: [1920, 1930, 1940, 1950, 1960, 1970, 1980, 1990, 2000, 2010]
         },
         options: {
             responsive: true,
@@ -54,9 +55,7 @@
         }
     };
 
-    Blazor.registerFunction('renderChart', function(decades) {
-        config.data.labels = decades;
-
+    Blazor.registerFunction('renderChart', function() {
         var ctx = document.getElementById('canvas').getContext('2d');
         nameChart = new Chart(ctx, config);
 
@@ -84,6 +83,13 @@
             return element.id === id;
         });
         nameChart.data.datasets.splice(index, 1);
+        nameChart.update();
+
+        return true;
+    });
+
+    Blazor.registerFunction('removeAllDatasets', function() {
+        nameChart.data.datasets = [];
         nameChart.update();
 
         return true;

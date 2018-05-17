@@ -1,0 +1,171 @@
+﻿@using Microsoft.AspNetCore.Blazor.Browser.Interop
+@using Names.Domain.Entities
+@using Names.Web.Model
+@using Names.Web
+@inject Names.Web.EventHandlers.ProvinceChangeHandler ProvinceChangeHandler
+@inject Names.Web.EventHandlers.YearChangeHandler YearChangeHandler
+@inject Names.Web.ApiClients.NameApiClient NameApiClient
+@inject Names.Web.ApiClients.QuantityApiClient QuantityApiClient
+
+<h1>Cien años de nombres</h1>
+
+<p>Pincha en un nombre para ver su evolución</p>
+
+@if (names == null)
+{
+    <div class="preloader">
+        <div class="preloader__container">
+            <i class="preloader__element"></i>
+            <i class="preloader__element"></i>
+        </div>
+    </div>
+}
+else
+{
+    <div class="tagcloud">
+        <div>
+            @foreach (var name in names)
+            {
+                <a href="#" onclick="@(() => ToggleName(name))" style="@GetStyle(name.Total)" class="@name.Class">@name.Value</a>
+            }
+        </div>
+    </div>
+}
+
+@functions {
+    const int fontMin = 10;
+    const int fontMax = 42;
+
+    public TagName[] names;
+    public int max;
+    public int min;
+
+    private int _province;
+    private int _year;
+
+    protected override async Task OnInitAsync()
+    {
+        names = await NameApiClient.GetAll();
+        CalculateMaxMin();
+        ProvinceChangeHandler.ProvinceChanged += new EventHandler<int>(this.OnProvinceChanged);
+        YearChangeHandler.YearChanged += new EventHandler<int>(this.OnYearChanged);
+    }
+
+    public string GetStyle(int total)
+    {
+        double size;
+
+        if (total <= min)
+        {
+            size = (double)fontMin;
+        }
+        else if (total >= max)
+        {
+            size = (double)fontMax;
+        }
+        else {
+            size = ((double)total / (double)max) * (fontMax - fontMin) + fontMin;
+        }
+
+        return $"font-size:{size.ToString()}px";
+    }
+
+    public void ToggleName(TagName name)
+    {
+        if (name.IsClicked)
+        {
+            name.IsClicked = false;
+            RemoveName(name);
+        }
+        else
+        {
+            name.IsClicked = true;
+            AddName(name);
+        }
+    }
+
+    private async void OnProvinceChanged(object sender, int provinceId)
+    {
+        names = null;
+        RemoveAllDatasets();
+        this.StateHasChanged();
+
+        _province = provinceId;
+        await GetNames();
+    }
+
+    private async void OnYearChanged(object sender, int yearId)
+    {
+        names = null;
+        RemoveAllDatasets();
+        this.StateHasChanged();
+
+        _year = yearId;
+        await GetNames();
+    }
+
+    private async Task GetNames()
+    {
+        if (_year > 0 && _province > 0)
+        {
+            names = await NameApiClient.GetByYearAndProvince(_province, _year);
+        }
+        else if (_year > 0)
+        {
+            names = await NameApiClient.GetByYear(_year);
+        }
+        else if (_province > 0)
+        {
+            names = await NameApiClient.GetByProvince(_province);
+        }
+        else
+        {
+            names = await NameApiClient.GetAll();
+        }
+
+        CalculateMaxMin();
+
+        this.StateHasChanged();
+    }
+
+    private void CalculateMaxMin()
+    {
+        max = names.Select(x => x.Total).Aggregate((acc, x) => acc > x ? acc : x);
+        min = names.Select(x => x.Total).Aggregate((acc, x) => acc < x ? acc : x);
+    }
+
+    private async void AddName(TagName name)
+    {
+        var quantities = await QuantityApiClient.GetByName(name.Id);
+
+        int[] data = new int[10];
+
+        for (var i = 0; i < 10; i++)
+        {
+            var quantity = Array.Find(quantities, q => q.Year == i + 1);
+            data[i] = quantity != null ? quantity.Total : 0;
+        }
+
+        AddDataset(name.Id, name.Value, data);
+    }
+
+    private void RemoveName(TagName name)
+    {
+        RemoveDataset(name.Id);
+    }
+
+    private void AddDataset(int id, string name, int[] data)
+    {
+        RegisteredFunction.Invoke<bool>("addDataset", id, name, data);
+    }
+
+    private void RemoveDataset(int id)
+    {
+        RegisteredFunction.Invoke<bool>("removeDataset", id);
+    }
+
+    private void RemoveAllDatasets()
+    {
+        RegisteredFunction.Invoke<bool>("removeAllDatasets");
+    }
+}

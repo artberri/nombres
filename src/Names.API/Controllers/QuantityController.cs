@@ -26,5 +26,29 @@ namespace Names.API.Controllers
 
             return quantities.ToList();
         }
+
+        [HttpGet("{nameId}/byprovince/{provinceId}")]
+        public ActionResult<List<Quantity>> GetByNameAndProvince(int nameId, int provinceId)
+        {
+            var quantities = _quantityRepository.GetByNameAndProvince(nameId, provinceId);
+
+            return quantities.ToList();
+        }
+
+        [HttpGet("{nameId}/byyear/{yearId}")]
+        public ActionResult<List<Quantity>> GetByNameAndYear(int nameId, int yearId)
+        {
+            var quantities = _quantityRepository.GetByNameAndYear(yearId, yearId);
+
+            return quantities.ToList();
+        }
+
+        [HttpGet("{nameId}/byprovince/{provinceId}/byyear/{yearId}")]
+        public ActionResult<List<Quantity>> GetByNameAndProvinceAndYear(int nameId, int provinceId, int yearId)
+        {
+            var quantities = _quantityRepository.GetByNameAndProvinceAndYear(nameId, provinceId, yearId);
+
+            return quantities.ToList();
+        }
     }
 }

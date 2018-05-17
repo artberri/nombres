@@ -27,10 +27,26 @@ namespace Names.API.Controllers
             return names.ToList();
         }
 
-        [HttpGet("{provinceId}")]
+        [HttpGet("byprovince/{provinceId}")]
         public ActionResult<List<Name>> GetByProvince(int provinceId)
         {
             var names = _nameRepository.GetByProvince(provinceId);
+
+            return names.ToList();
+        }
+
+        [HttpGet("byyear/{yearId}")]
+        public ActionResult<List<Name>> GetByYear(int yearId)
+        {
+            var names = _nameRepository.GetByYear(yearId);
+
+            return names.ToList();
+        }
+
+        [HttpGet("byprovince/{provinceId}/byyear/{yearId}")]
+        public ActionResult<List<Name>> GetByProvinceAndYear(int provinceId, int yearId)
+        {
+            var names = _nameRepository.GetByProvinceAndYear(provinceId, yearId);
 
             return names.ToList();
         }
