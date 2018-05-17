@@ -88,6 +88,16 @@
         return true;
     });
 
+    Blazor.registerFunction('replaceDataset', function(id, data) {
+        var index = nameChart.data.datasets.findIndex(function(element) {
+            return element.id === id;
+        });
+        nameChart.data.datasets[index].data = data;
+        nameChart.update();
+
+        return true;
+    });
+
     Blazor.registerFunction('removeAllDatasets', function() {
         nameChart.data.datasets = [];
         nameChart.update();

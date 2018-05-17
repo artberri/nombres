@@ -17,8 +17,10 @@ namespace Names.Web
                 services.AddTransient<YearApiClient>();
                 services.AddTransient<ProvinceApiClient>();
                 services.AddTransient<QuantityApiClient>();
+                services.AddTransient<MixedApiClient>();
                 services.AddSingleton<ProvinceChangeHandler>();
                 services.AddSingleton<YearChangeHandler>();
+                services.AddSingleton<QuantityTypeChangeHandler>();
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

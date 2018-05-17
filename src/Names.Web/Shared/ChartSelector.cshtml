@@ -1,0 +1,40 @@
+﻿@inject Names.Web.EventHandlers.QuantityTypeChangeHandler QuantityTypeChangeHandler
+@using Names.Web.Enums
+
+<div class="chartselector">
+    <a href="#" onclick="@UseTotal" class="@TotalClass()">Cantidad</a>
+    <a href="#" onclick="@UsePercentage" class="@PercentageClass()">‰ Por mil</a>
+</div>
+
+@functions {
+
+    public QuantityType quantityType = QuantityType.Total;
+
+    public string TotalClass()
+    {
+        return quantityType == QuantityType.Total ? "active" : "";
+    }
+
+    public string PercentageClass()
+    {
+        return quantityType == QuantityType.Percentage ? "active" : "";
+    }
+
+    public void UseTotal()
+    {
+        if (quantityType != QuantityType.Total)
+        {
+            quantityType = QuantityType.Total;
+            QuantityTypeChangeHandler.ChangeTo(QuantityType.Total);
+        }
+    }
+
+    public void UsePercentage()
+    {
+        if (quantityType != QuantityType.Percentage)
+        {
+            quantityType = QuantityType.Percentage;
+            QuantityTypeChangeHandler.ChangeTo(QuantityType.Percentage);
+        }
+    }
+}

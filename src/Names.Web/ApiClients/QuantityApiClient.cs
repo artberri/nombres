@@ -21,5 +21,10 @@ namespace Names.Web.ApiClients
         {
             return await _http.GetJsonAsync<Quantity[]>($"{Config.BaseUrl}/{ApiBase}/{nameId}");
         }
+
+        public async Task<Quantity[]> GetByNameAndProvince(int nameId, int provinceId)
+        {
+            return await _http.GetJsonAsync<Quantity[]>($"{Config.BaseUrl}/{ApiBase}/{nameId}/byprovince/{provinceId}");
+        }
     }
 }

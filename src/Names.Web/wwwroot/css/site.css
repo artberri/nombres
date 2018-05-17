@@ -51,6 +51,31 @@ app {
     flex-direction: column;
 }
 
+.chartselector {
+    margin-left: 3vh;
+    display: flex;
+}
+
+    .chartselector a {
+        background: #f7f9ff;
+        padding: 0 15px;
+        font-size: 16px;
+        border-radius: 0;
+        height: 34px;
+        display: inline-block;
+        line-height: 34px;
+        border: 1px solid #d5d5d5;
+        box-sizing: border-box;
+        text-decoration: none;
+    }
+
+        .chartselector a.active {
+            color: #f7f9ff;
+            background: #924ecd;
+            border-color: #924ecd;
+            cursor: default;
+        }
+
 .yearselector {
     margin: 3vh 0;
 }

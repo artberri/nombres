@@ -5,5 +5,7 @@ namespace Names.Domain.Entities
         public int Year { get; set; }
 
         public int Total { get; set; }
+
+        public float Percentage { get; set; }
     }
 }

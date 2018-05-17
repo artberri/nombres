@@ -12,5 +12,7 @@ namespace Names.Domain.Entities
 
         public int Total { get; set; }
 
+        public Quantity[] Quantities { get; set; }
+
     }
 }
