@@ -68,6 +68,5 @@ docker-compose up --build
 ## To Do List
 
 - Create PWA
-- Show more than 1000 names
-- Allow to filter by province
+- Allow to search more names
 - Create mobile version
