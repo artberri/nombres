@@ -19,7 +19,7 @@ namespace Names.Web.ApiClients
 
         public async Task<TagName[]> GetAll()
         {
-            return await _http.GetJsonAsync<TagName[]>($"{Config.BaseUrl}/{ApiBase}");
+            return await _http.GetJsonAsync<TagName[]>("/data/names.json");
         }
 
         public async Task<TagName[]> GetByProvince(int provinceId)

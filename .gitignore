@@ -321,3 +321,4 @@ __pycache__/
 ## Names
 src/*/out
 !/terraform.tfvars
+src/Names.Web/wwwroot/*/*.min.*
