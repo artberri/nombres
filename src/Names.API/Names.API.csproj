@@ -13,6 +13,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.1.0-rc1-final" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.4.0" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.3.0-beta2" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCaching" Version="2.1.0-rc1-final" />
+    <PackageReference Include="Microsoft.AspNetCore.ResponseCompression" Version="2.1.0-rc1-final" />
   </ItemGroup>
 
   <ItemGroup>

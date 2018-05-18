@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 
@@ -30,6 +32,8 @@ namespace Names.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
+            services.AddResponseCaching();
+            services.AddResponseCompression();
             services.AddMvc().AddJsonOptions(opt =>
             {
                 var resolver  = opt.SerializerSettings.ContractResolver;
@@ -60,6 +64,20 @@ namespace Names.API
             {
                 app.UseHsts();
             }
+
+            app.UseResponseCaching();
+            app.Use(async (context, next) =>
+            {
+                context.Response.GetTypedHeaders().CacheControl = new CacheControlHeaderValue()
+                {
+                    Public = true,
+                };
+                context.Response.Headers[HeaderNames.LastModified] = new string[] { (new DateTime(2018, 5, 17)).ToString() };
+
+                await next();
+            });
+
+            app.UseResponseCompression();
 
             app.UseCors(builder =>
                 builder.WithOrigins("http://localhost:32077"));
