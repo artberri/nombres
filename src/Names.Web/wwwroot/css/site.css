@@ -51,6 +51,10 @@ app {
     flex-direction: column;
 }
 
+.right {
+    text-align: right;
+}
+
 .chartselector {
     margin-left: 3vh;
     display: flex;
@@ -95,9 +99,14 @@ app {
     flex: 1;
 }
 
+.flex {
+    display: flex;
+}
+
 .header {
     padding: 3vh 0;
     display: flex;
+    justify-content: space-between;
 }
 
 .sidebar {
@@ -149,6 +158,8 @@ app {
 .footer {
     font-size: 0.7rem;
     margin: 3vh 0 6vh;
+    display: flex;
+    justify-content: space-between;
 }
 
 .preloader {

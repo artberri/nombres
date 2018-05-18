@@ -62,6 +62,12 @@ resource "azurerm_template_deployment" "nombresapp" {
             "metadata": {
                 "description": "Docker image"
             }
+        },
+        "custom_domain": {
+            "type": "string",
+            "metadata": {
+                "description": "Custom domain"
+            }
         }
     },
     "variables": {
@@ -75,6 +81,7 @@ resource "azurerm_template_deployment" "nombresapp" {
                 "siteConfig": {
                     "alwaysOn": true,
                     "http20Enabled": true,
+                    "httpsOnly": true,
                     "appSettings": [
                         {
                             "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
@@ -105,15 +112,44 @@ resource "azurerm_template_deployment" "nombresapp" {
                     ]
                 }
             ]
+        },
+        ,
+        {
+            "type":"Microsoft.Web/certificates",
+            "name":"[variables('certificateName')]",
+            "apiVersion":"2016-03-01",
+            "location":"[resourceGroup().location]",
+            "properties":{
+                "keyVaultId":"[parameters('existingKeyVaultId')]",
+                "keyVaultSecretName":"[parameters('existingKeyVaultSecretName')]",
+                "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanName'))]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Web/sites/',parameters('webAppName'))]"
+            ]
+        },
+        {
+            "type":"Microsoft.Web/sites/hostnameBindings",
+            "name":"[concat(parameters('webAppName'), '/', parameters('customHostname'))]",
+            "apiVersion":"2016-03-01",
+            "location":"[resourceGroup().location]",
+            "properties":{
+                "sslState":"SniEnabled",
+                "thumbprint":"[reference(resourceId('Microsoft.Web/certificates', variables('certificateName'))).Thumbprint]"
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Web/certificates/',variables('certificateName'))]"
+            ]
         }
     ]
 }
 DEPLOY
 
     parameters {
-        name = "nombresapp"
-        image = "artberri/nombres:latest"
-        slot_name = "staging"
+        name                = "nombresapp"
+        image               = "artberri/nombres:latest"
+        slot_name           = "staging"
+        custom_domain       = "nombres.berriart.com"
         app_service_plan_id = "${azurerm_app_service_plan.nombres.id}"
     }
 

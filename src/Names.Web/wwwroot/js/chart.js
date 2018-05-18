@@ -59,6 +59,11 @@
         var ctx = document.getElementById('canvas').getContext('2d');
         nameChart = new Chart(ctx, config);
 
+        // Add this
+        var script = document.createElement('script');
+        script.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5afefe6e3de26255';
+        document.body.appendChild(script);
+
         return true;
     });
 
