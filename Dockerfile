@@ -20,6 +20,8 @@ COPY --from=api-builder /code/src/Names.API/out .
 COPY --from=web-builder /code/src/Names.Web/out/Names.Web/dist ./wwwroot
 COPY --from=web-builder /code/src/Names.Web/out/wwwroot/css ./wwwroot/css
 COPY --from=web-builder /code/src/Names.Web/out/wwwroot/js ./wwwroot/js
-COPY --from=web-builder /code/src/Names.Web/out/wwwroot/sample-data ./wwwroot/sample-data
+COPY --from=web-builder /code/src/Names.Web/out/wwwroot/data ./wwwroot/data
+COPY --from=web-builder /code/src/Names.Web/out/wwwroot/images ./wwwroot/images
+COPY --from=web-builder /code/src/Names.Web/out/wwwroot/vendor ./wwwroot/vendor
 ENTRYPOINT ["dotnet", "Names.API.dll"]
 EXPOSE 5000/tcp
