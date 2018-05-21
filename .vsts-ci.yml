@@ -1,3 +1,4 @@
+name: $(date:yyyy).$(date:MMdd)$(rev:.r)
 resources:
 - repo: self
 queue:
