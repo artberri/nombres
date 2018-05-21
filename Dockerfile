@@ -1,3 +1,9 @@
+FROM microsoft/dotnet:2.1.300-rc1-sdk-alpine3.7 as test
+ADD . /code
+WORKDIR /code/tests/Names.Tests
+RUN dotnet restore
+RUN dotnet test
+
 FROM microsoft/dotnet:2.1.300-rc1-sdk-alpine3.7 as web-builder
 ADD . /code
 WORKDIR /code/src/Names.Web

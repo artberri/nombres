@@ -1,0 +1,22 @@
+resources:
+- repo: self
+queue:
+  name: Hosted Linux Preview
+steps:
+- task: Docker@0
+  displayName: Build an image
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: DockerHub
+    dockerFile: Dockerfile
+    imageName: 'artberri/nombres:$(Build.BuildNumber)'
+    qualifyImageName: false
+
+- task: Docker@0
+  displayName: Push an image
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryConnection: DockerHub
+    action: 'Push an image'
+    imageName: 'artberri/nombres:$(Build.BuildNumber)'
+    qualifyImageName: false
