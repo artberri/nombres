@@ -77,7 +77,11 @@ resource "azurerm_template_deployment" "nombresapp" {
             "type": "Microsoft.Web/sites",
             "kind": "app,linux,container",
             "name": "[parameters('name')]",
+            "apiVersion": "2016-08-01",
+            "location": "[resourceGroup().location]",
             "properties": {
+                "name": "[parameters('name')]",
+                "serverFarmId": "[parameters('app_service_plan_id')]",
                 "siteConfig": {
                     "alwaysOn": true,
                     "http20Enabled": true,
@@ -93,17 +97,13 @@ resource "azurerm_template_deployment" "nombresapp" {
                         }
                     ],
                     "linuxFxVersion": "[concat('DOCKER|', parameters('image'))]"
-                },
-                "name": "[parameters('name')]",
-                "serverFarmId": "[parameters('app_service_plan_id')]"
+                }
             },
-            "apiVersion": "2016-08-01",
-            "location": "[resourceGroup().location]",
             "resources": [
                 {
-                    "apiVersion": "2015-04-01",
                     "type": "Microsoft.Web/Sites/Slots",
                     "name": "[concat(parameters('name'), '/', parameters('slot_name'))]",
+                    "apiVersion": "2015-04-01",
                     "location": "[resourceGroup().location]",
                     "properties": {},
                     "resources": [],
@@ -111,34 +111,6 @@ resource "azurerm_template_deployment" "nombresapp" {
                         "[resourceId('Microsoft.Web/Sites', parameters('name'))]"
                     ]
                 }
-            ]
-        },
-        ,
-        {
-            "type":"Microsoft.Web/certificates",
-            "name":"[variables('certificateName')]",
-            "apiVersion":"2016-03-01",
-            "location":"[resourceGroup().location]",
-            "properties":{
-                "keyVaultId":"[parameters('existingKeyVaultId')]",
-                "keyVaultSecretName":"[parameters('existingKeyVaultSecretName')]",
-                "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('appServicePlanName'))]"
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Web/sites/',parameters('webAppName'))]"
-            ]
-        },
-        {
-            "type":"Microsoft.Web/sites/hostnameBindings",
-            "name":"[concat(parameters('webAppName'), '/', parameters('customHostname'))]",
-            "apiVersion":"2016-03-01",
-            "location":"[resourceGroup().location]",
-            "properties":{
-                "sslState":"SniEnabled",
-                "thumbprint":"[reference(resourceId('Microsoft.Web/certificates', variables('certificateName'))).Thumbprint]"
-            },
-            "dependsOn": [
-                "[concat('Microsoft.Web/certificates/',variables('certificateName'))]"
             ]
         }
     ]
