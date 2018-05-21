@@ -10,7 +10,7 @@ html, body {
 h1 {
     font-family: 'Anton', sans-serif;
     color: #f56a68;
-    font-size: 2.8rem;
+    font-size: 2rem;
     font-weight: normal;
 }
 
@@ -43,6 +43,7 @@ select {
     border: 1px solid #d5d5d5;
     box-sizing: border-box;
     border-left: 0;
+    width: 100%;
 }
 
 app {
@@ -52,11 +53,28 @@ app {
 }
 
 .right {
-    text-align: right;
+    text-align: center;
+}
+
+.chart-container {
+    position: relative;
+}
+
+.chart-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: rgba(0, 0, 0, .2);
+    padding: 2vh;
+    width: 280px;
+    margin-left: -140px;
+    margin-top: -25px;
+    box-sizing: border-box;
+    font-size: 14px;
 }
 
 .chartselector {
-    margin-left: 3vh;
+    margin-left: 0;
     display: flex;
 }
 
@@ -71,6 +89,7 @@ app {
         border: 1px solid #d5d5d5;
         box-sizing: border-box;
         text-decoration: none;
+        width: 50%;
     }
 
         .chartselector a.active {
@@ -81,7 +100,7 @@ app {
         }
 
 .yearselector {
-    margin: 3vh 0;
+    margin: 3vh 0 0;
 }
 
     .yearselector label {
@@ -104,10 +123,16 @@ app {
 }
 
 .header {
-    padding: 3vh 0;
+    padding: 3vh 3vh 0 3vh;
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    text-align: center;
 }
+
+    .header > * {
+        margin-bottom: 2vh;
+    }
 
 .sidebar {
     background: #f7f9ff;
@@ -122,6 +147,7 @@ app {
     flex: 1;
     overflow: auto;
     padding-right: 2vh;
+    height: 160px;
 }
 
 .tag {
@@ -152,7 +178,7 @@ app {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 100vh;
+    height: auto;
 }
 
 .footer {
@@ -160,6 +186,8 @@ app {
     margin: 3vh 0 6vh;
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
+    text-align: center;
 }
 
 .preloader {
@@ -196,10 +224,28 @@ app {
             transform-origin: -80px top;
         }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
+    h1 {
+        font-size: 2.8rem;
+    }
+
+    select {
+        width: auto;
+    }
+
     app {
         flex-direction: row;
     }
+
+    .header {
+        text-align: left;
+        flex-direction: row;
+        padding: 3vh 0;
+    }
+
+        .header > * {
+            margin: 0;
+        }
 
     .sidebar {
         width: 33%;
@@ -211,6 +257,35 @@ app {
     .main > div {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
+    }
+
+    .tagcloud {
+        height: auto;
+    }
+
+    .yearselector {
+        margin: 3vh 0;
+    }
+
+    .chartselector {
+        margin-left: 3vh;
+    }
+
+        .chartselector a {
+            width: auto;
+        }
+
+    .content {
+        height: 100vh;
+    }
+
+    .footer {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .right {
+        text-align: right;
     }
 }
 

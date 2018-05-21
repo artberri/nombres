@@ -21,6 +21,7 @@ namespace Names.Web
                 services.AddSingleton<ProvinceChangeHandler>();
                 services.AddSingleton<YearChangeHandler>();
                 services.AddSingleton<QuantityTypeChangeHandler>();
+                services.AddSingleton<ChartStatusHandler>();
             });
 
             new BrowserRenderer(serviceProvider).AddComponent<App>("app");

@@ -7,6 +7,7 @@
 @inject Names.Web.EventHandlers.ProvinceChangeHandler ProvinceChangeHandler
 @inject Names.Web.EventHandlers.YearChangeHandler YearChangeHandler
 @inject Names.Web.EventHandlers.QuantityTypeChangeHandler QuantityTypeChangeHandler
+@inject Names.Web.EventHandlers.ChartStatusHandler ChartStatusHandler
 @inject Names.Web.ApiClients.MixedApiClient MixedApiClient
 @inject Names.Web.ApiClients.NameApiClient NameApiClient
 
@@ -62,6 +63,7 @@ else
         }
         else
         {
+            ChartStatusHandler.ChangeTo(ChartStatusType.Loading);
             name.IsClicked = true;
             AddName(name);
         }
@@ -112,12 +114,14 @@ else
         var data = ChartHelper.NormalizeQuantities(quantities, _quantityType);
 
         AddDataset(name.Id, name.Value, data);
+        ChartStatusHandler.ChangeTo(ChartStatusType.Loaded);
     }
 
     private async Task GetNames()
     {
         names = await MixedApiClient.GetNames(_province, _year);
         CalculateMaxMin();
+        ChartStatusHandler.ChangeTo(ChartStatusType.Empty);
         this.StateHasChanged();
     }
 

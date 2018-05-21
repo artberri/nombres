@@ -69,4 +69,3 @@ docker-compose up --build
 
 - Create PWA
 - Allow to search more names
-- Create mobile version
