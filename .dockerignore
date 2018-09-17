@@ -2,3 +2,7 @@
 .vs/
 [Bb]in/
 [Oo]bj/
+
+src/*/out
+!/terraform.tfvars
+src/Names.Web/wwwroot/*/*.min.*

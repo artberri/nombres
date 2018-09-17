@@ -24,5 +24,8 @@ ADD ./db/nombres.db ../db
 WORKDIR /app/release
 COPY --from=api-builder /code/src/Names.API/out .
 COPY --from=web-builder /code/src/Names.Web/out/Names.Web/dist ./wwwroot
+COPY --from=web-builder /code/src/Names.Web/out/wwwroot/css ./wwwroot/css
+COPY --from=web-builder /code/src/Names.Web/out/wwwroot/js ./wwwroot/js
+
 ENTRYPOINT ["dotnet", "Names.API.dll"]
 EXPOSE 5000/tcp
