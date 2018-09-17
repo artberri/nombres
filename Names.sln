@@ -5,17 +5,25 @@ VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6A6A77D8-629C-4934-B725-5008C085DDE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Names.API", "src\Names.API\Names.API.csproj", "{35E819DA-F649-44EC-B2A3-D87F651955BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Names.API", "src\Names.API\Names.API.csproj", "{35E819DA-F649-44EC-B2A3-D87F651955BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Names.Domain", "src\Names.Domain\Names.Domain.csproj", "{55D54E58-98C1-4528-B7A1-1DD79405F70E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Names.Domain", "src\Names.Domain\Names.Domain.csproj", "{55D54E58-98C1-4528-B7A1-1DD79405F70E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Names.Infrastructure", "src\Names.Infrastructure\Names.Infrastructure.csproj", "{2E5FA80B-DB13-4C23-8D89-3518677085B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Names.Infrastructure", "src\Names.Infrastructure\Names.Infrastructure.csproj", "{2E5FA80B-DB13-4C23-8D89-3518677085B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Names.Web", "src\Names.Web\Names.Web.csproj", "{B2C3C387-FCEC-41BF-A71A-211DEDE323DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Names.Web", "src\Names.Web\Names.Web.csproj", "{B2C3C387-FCEC-41BF-A71A-211DEDE323DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4B18A667-EA3D-4D47-8835-AB031567102A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Names.Tests", "tests\Names.Tests\Names.Tests.csproj", "{1A6DB598-2128-4EEE-8F72-2B0E7397315A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Names.Tests", "tests\Names.Tests\Names.Tests.csproj", "{1A6DB598-2128-4EEE-8F72-2B0E7397315A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution-items", "solution-items", "{D5D451C2-5A03-4E76-A424-2C1E67022C88}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		Dockerfile = Dockerfile
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,9 +33,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{35E819DA-F649-44EC-B2A3-D87F651955BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -91,11 +96,17 @@ Global
 		{1A6DB598-2128-4EEE-8F72-2B0E7397315A}.Release|x86.ActiveCfg = Release|Any CPU
 		{1A6DB598-2128-4EEE-8F72-2B0E7397315A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{35E819DA-F649-44EC-B2A3-D87F651955BA} = {6A6A77D8-629C-4934-B725-5008C085DDE4}
 		{55D54E58-98C1-4528-B7A1-1DD79405F70E} = {6A6A77D8-629C-4934-B725-5008C085DDE4}
 		{2E5FA80B-DB13-4C23-8D89-3518677085B0} = {6A6A77D8-629C-4934-B725-5008C085DDE4}
 		{B2C3C387-FCEC-41BF-A71A-211DEDE323DD} = {6A6A77D8-629C-4934-B725-5008C085DDE4}
 		{1A6DB598-2128-4EEE-8F72-2B0E7397315A} = {4B18A667-EA3D-4D47-8835-AB031567102A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {42DB7A7B-5A80-4B78-B427-80D09353A473}
 	EndGlobalSection
 EndGlobal

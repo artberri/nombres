@@ -1,6 +1,4 @@
-using System;
-using System.Linq;
-using Names.Web.Model;
+using System.Globalization;
 
 namespace Names.Web.Helpers
 {
@@ -25,7 +23,7 @@ namespace Names.Web.Helpers
                 size = ((double)total / (double)max) * (fontMax - fontMin) + fontMin;
             }
 
-            return $"font-size:{size.ToString()}px";
+            return $"font-size:{size.ToString(CultureInfo.InvariantCulture)}px";
         }
     }
 }

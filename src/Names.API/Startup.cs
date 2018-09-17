@@ -80,7 +80,7 @@ namespace Names.API
             app.UseResponseCompression();
 
             app.UseCors(builder =>
-                builder.WithOrigins("http://localhost:32077"));
+                builder.WithOrigins("http://localhost:61061"));
 
             var provider = new FileExtensionContentTypeProvider();
             provider.Mappings[".wasm"] = "application/wasm";

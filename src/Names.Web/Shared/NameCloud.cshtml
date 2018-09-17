@@ -1,4 +1,4 @@
-﻿@using Microsoft.AspNetCore.Blazor.Browser.Interop
+﻿@using Microsoft.JSInterop
 @using Names.Web.Helpers
 @using Names.Domain.Entities
 @using Names.Web.Model
@@ -132,21 +132,21 @@ else
 
     private void AddDataset(int id, string name, int[] data)
     {
-        RegisteredFunction.Invoke<bool>("addDataset", id, name, data);
+        JSRuntime.Current.InvokeAsync<bool>("chartFunctions.addDataset", id, name, data);
     }
 
     private void RemoveDataset(int id)
     {
-        RegisteredFunction.Invoke<bool>("removeDataset", id);
+        JSRuntime.Current.InvokeAsync<bool>("chartFunctions.removeDataset", id);
     }
 
     private void ReplaceDataset(int id, int[] data)
     {
-        RegisteredFunction.Invoke<bool>("replaceDataset", id, data);
+        JSRuntime.Current.InvokeAsync<bool>("chartFunctions.replaceDataset", id, data);
     }
 
     private void RemoveAllDatasets()
     {
-        RegisteredFunction.Invoke<bool>("removeAllDatasets");
+        JSRuntime.Current.InvokeAsync<bool>("chartFunctions.removeAllDatasets");
     }
 }

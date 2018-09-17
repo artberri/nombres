@@ -55,58 +55,56 @@
         }
     };
 
-    Blazor.registerFunction('renderChart', function() {
-        var ctx = document.getElementById('canvas').getContext('2d');
-        nameChart = new Chart(ctx, config);
+    window.chartFunctions = {
+        renderChart: function() {
+            var ctx = document.getElementById('canvas').getContext('2d');
+            nameChart = new Chart(ctx, config);
 
-        // Add this
-        var script = document.createElement('script');
-        script.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5afefe6e3de26255';
-        document.body.appendChild(script);
+            // Add this
+            var script = document.createElement('script');
+            script.src = '//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5afefe6e3de26255';
+            document.body.appendChild(script);
 
-        return true;
-    });
+            return true;
+        },
+        addDataset: function(id, name, data) {
+            var colorIndex = colorCount % 7;
+            colorCount++;
+            nameChart.data.datasets.push({
+                id: id,
+                label: name,
+                backgroundColor: chartColors[colorIndex],
+                borderColor: chartColors[colorIndex],
+                data: data,
+                fill: false,
+            });
+            nameChart.update();
 
-    Blazor.registerFunction('addDataset', function(id, name, data) {
-        var colorIndex = colorCount % 7;
-        colorCount++;
-        nameChart.data.datasets.push({
-            id: id,
-            label: name,
-            backgroundColor: chartColors[colorIndex],
-            borderColor: chartColors[colorIndex],
-            data: data,
-            fill: false,
-        });
-        nameChart.update();
+            return true;
+        },
+        removeDataset: function(id) {
+            var index = nameChart.data.datasets.findIndex(function(element) {
+                return element.id === id;
+            });
+            nameChart.data.datasets.splice(index, 1);
+            nameChart.update();
 
-        return true;
-    });
+            return true;
+        },
+        replaceDataset: function(id, data) {
+            var index = nameChart.data.datasets.findIndex(function(element) {
+                return element.id === id;
+            });
+            nameChart.data.datasets[index].data = data;
+            nameChart.update();
 
-    Blazor.registerFunction('removeDataset', function(id) {
-        var index = nameChart.data.datasets.findIndex(function(element) {
-            return element.id === id;
-        });
-        nameChart.data.datasets.splice(index, 1);
-        nameChart.update();
+            return true;
+        },
+        removeAllDatasets: function() {
+            nameChart.data.datasets = [];
+            nameChart.update();
 
-        return true;
-    });
-
-    Blazor.registerFunction('replaceDataset', function(id, data) {
-        var index = nameChart.data.datasets.findIndex(function(element) {
-            return element.id === id;
-        });
-        nameChart.data.datasets[index].data = data;
-        nameChart.update();
-
-        return true;
-    });
-
-    Blazor.registerFunction('removeAllDatasets', function() {
-        nameChart.data.datasets = [];
-        nameChart.update();
-
-        return true;
-    });
+            return true;
+        }
+    };
 })();

@@ -1,7 +1,7 @@
 ﻿@page "/"
 @inject HttpClient Http
 @inject Names.Web.EventHandlers.ChartStatusHandler ChartStatusHandler
-@using Microsoft.AspNetCore.Blazor.Browser.Interop
+@using Microsoft.JSInterop
 @using Names.Domain.Entities
 @using Names.Web.Enums
 
@@ -42,26 +42,27 @@
 </div>
 
 @functions {
-    protected ChartStatusType status = ChartStatusType.Empty;
+protected ChartStatusType status = ChartStatusType.Empty;
 
-    protected override void OnInit()
-    {
-        ChartStatusHandler.ChartStatusChanged += new EventHandler<ChartStatusType>(this.OnChartStatusChanged);
-    }
+protected override void OnInit()
+{
+    ChartStatusHandler.ChartStatusChanged += new EventHandler<ChartStatusType>(this.OnChartStatusChanged);
+}
 
-    protected override void OnAfterRender()
-    {
-        RenderChart();
-    }
+protected override void OnAfterRender()
+{
+    RenderChart();
+}
 
-    protected void RenderChart()
-    {
-        RegisteredFunction.Invoke<bool>("renderChart");
-    }
+protected void RenderChart()
+{
+    JSRuntime.Current.InvokeAsync<bool>(
+        "chartFunctions.renderChart");
+}
 
-    protected void OnChartStatusChanged(object sender, ChartStatusType chartStatus)
-    {
-        status = chartStatus;
-        this.StateHasChanged();
-    }
+protected void OnChartStatusChanged(object sender, ChartStatusType chartStatus)
+{
+    status = chartStatus;
+    this.StateHasChanged();
+}
 }
